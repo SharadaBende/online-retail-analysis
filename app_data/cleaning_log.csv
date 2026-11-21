@@ -1,0 +1,8 @@
+step,rows,note
+Raw transactions,541909,Rows in the original file
+Exact duplicates removed,5268,Identical rows
+Cancellation lines separated,9251,Invoices starting with 'C'
+Non-product rows removed,2406,"Postage, discounts, manual entries, fees, gift vouchers"
+Invalid rows removed,2480,Zero or negative price or quantity
+Order-and-cancel outliers removed,2,Huge orders fully reversed minutes later
+Clean sales rows,522502,Rows used for the analysis

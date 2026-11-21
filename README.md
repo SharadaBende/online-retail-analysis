@@ -24,12 +24,23 @@
 - Cancellations are about 2.3% of sales revenue.
 - Top product by revenue: REGENCY CAKESTAND 3 TIER.
 
+## Interactive dashboard
+A Streamlit app (`app.py`) lets you explore the results: change the dormant threshold with a slider, search the clearance list and download it as CSV.
+```
+streamlit run app.py
+```
+It reads small precomputed files from `app_data/` (built by `prepare_app_data.py`), so it needs no raw data to run.
+
 ## Project structure
 ```
 online-retail-analysis/
 ├── online_retail_analysis.ipynb   # full analysis, already executed (outputs included)
-├── requirements.txt
-├── data/                          # dataset (not committed to git)
+├── app.py                         # Streamlit dashboard
+├── prepare_app_data.py            # builds app_data/ from the raw dataset
+├── app_data/                      # small precomputed files used by the app
+├── requirements.txt               # app dependencies (used for deployment)
+├── requirements-notebook.txt      # adds Jupyter for running the notebook
+├── data/                          # raw dataset (not committed to git)
 └── outputs/
     ├── figures/                   # 5 charts (PNG)
     ├── clearance_candidates.csv   # dormant products for review
@@ -40,7 +51,7 @@ online-retail-analysis/
 ```
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-notebook.txt
 jupyter notebook online_retail_analysis.ipynb
 ```
 The notebook reads `data/Online Retail.xlsx`. Tunable parameters (`DORMANT_DAYS`, `OUTLIER_QTY`) are at the top.

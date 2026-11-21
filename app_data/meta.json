@@ -1,0 +1,13 @@
+{
+  "raw_rows": 541909,
+  "clean_rows": 522502,
+  "n_products": 3790,
+  "n_invoices": 19771,
+  "date_min": "2010-12-01",
+  "date_max": "2011-12-09",
+  "total_revenue": 10001167.67,
+  "sepnov_share": 0.3583,
+  "uk_share": 0.8477,
+  "cancel_value": 230247.96,
+  "cancel_pct": 0.023
+}
