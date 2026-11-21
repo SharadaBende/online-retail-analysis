@@ -1,30 +1,55 @@
 # Online Retail: Data Cleaning, EDA and Slow-Moving Inventory Analysis
 
-Python, Pandas, NumPy, Matplotlib, Seaborn, Jupyter Notebook
-Dataset: UCI Online Retail (about 540K transactions, Dec 2010 to Dec 2011)
+**Stack:** Python, Pandas, NumPy, Matplotlib, Seaborn, Jupyter Notebook
+**Data:** UCI Online Retail dataset (541,909 transactions, 1 Dec 2010 to 9 Dec 2011, UK-based online gift retailer)
 
-## What it does
-1. Cleans the transactions: removes exact duplicates, separates cancellations,
-   filters non-product stock codes, drops invalid rows and order-and-cancel outliers.
-2. EDA: seasonality, country mix, top products, weekday x hour demand.
-3. Slow-moving inventory: classifies each product by days since last sale
-   (Active / Slow / Very slow / Dormant) and exports a clearance-review list.
+## Results (all computed by the notebook)
+
+**Cleaning**
+- Removed 5,268 exact duplicate rows.
+- Separated 9,251 cancellation lines (invoices starting with `C`) into their own table.
+- Removed 2,406 non-product rows (postage, discounts, manual entries, fees, gift vouchers) using a 5-digit stock-code rule.
+- Removed 2,480 invalid rows (zero or negative price/quantity).
+- Excluded 2 order-and-cancel outliers (74,215 and 80,995 units, each fully reversed minutes later) that distorted top-product revenue.
+- Clean sales table: 522,502 rows, 3,790 products, 19,771 invoices, about 10.0M GBP revenue.
+
+**Slow-moving inventory** (days since last sale, measured from the last date in the data)
+- 635 dormant products (no sale in more than 90 days): 16.8% of products but only 1.9% of revenue.
+- Exported as `outputs/clearance_candidates.csv` for clearance review.
+
+**Demand patterns**
+- Sep to Nov = 36% of all revenue (41% of Jan to Nov 2011); November is the peak month.
+- UK = 85% of revenue.
+- Busiest weekday is Thursday, busiest hour is 12:00; there are no Saturday sales in the data.
+- Cancellations are about 2.3% of sales revenue.
+- Top product by revenue: REGENCY CAKESTAND 3 TIER.
+
+## Project structure
+```
+online-retail-analysis/
+├── online_retail_analysis.ipynb   # full analysis, already executed (outputs included)
+├── requirements.txt
+├── data/                          # dataset (not committed to git)
+└── outputs/
+    ├── figures/                   # 5 charts (PNG)
+    ├── clearance_candidates.csv   # dormant products for review
+    └── product_status_all.csv     # status of every product
+```
 
 ## Run it
 ```
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-# put the dataset in data/ (see data/README.md)
 jupyter notebook online_retail_analysis.ipynb
 ```
+The notebook reads `data/Online Retail.xlsx`. Tunable parameters (`DORMANT_DAYS`, `OUTLIER_QTY`) are at the top.
 
-## Outputs
-- `outputs/figures/` charts
-- `outputs/clearance_candidates.csv` dormant products for review
-- `outputs/product_status_all.csv` status for every product
+## Method notes and limitations
+- "Product" means a 5-digit stock code (with optional letter suffix).
+- Rows with a missing `CustomerID` are kept, since the analysis is product-level.
+- There is no stock-level data, so "dormant" means no sales in the data window. Seasonal or discontinued items need a manual check before any clearance decision. A sensitivity table in the notebook shows how the dormant count changes with the threshold.
+- December 2011 is a partial month (data ends 9 Dec).
 
-## Results
-Run the notebook and copy the numbers from its final "Key findings" cell here.
-
-## Limitations
-No stock-level data: "dormant" means no sales in the data window, so seasonal or
-discontinued items need a manual check before any clearance decision.
+## Data source
+Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33 (CC BY 4.0)

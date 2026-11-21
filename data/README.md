@@ -1,8 +1,5 @@
 # Data
 
-Download the UCI Online Retail dataset and place **one** of these files here:
-
-- `Online Retail.xlsx` (UCI Machine Learning Repository)
-- `OnlineRetail.csv` (Kaggle copy)
-
-The dataset is not committed to git (see `.gitignore`).
+`Online Retail.xlsx` (UCI Online Retail dataset, CC BY 4.0) goes in this folder.
+It is excluded from git via `.gitignore`. If missing, download it from
+https://archive.ics.uci.edu/dataset/352/online-retail
